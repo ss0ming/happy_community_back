@@ -1,4 +1,4 @@
-package com.example.happy_community_back.entity;
+package com.example.happy_community_back.domain.Board.entity;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,7 +18,7 @@ public class ArticleComment {
     @Column(nullable = false)
     private Character isDeleted; // 삭제여부
 
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "article_id")
     @ManyToOne(optional = false)
     private Article article; // 게시글 (ID)
 
