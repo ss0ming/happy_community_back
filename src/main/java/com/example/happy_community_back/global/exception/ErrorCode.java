@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    ARTICLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "ATL001", "존재하지 않는 게시글입니다.");
+    ARTICLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "ATL001", "존재하지 않는 게시글입니다."),
+
+    ARTICLE_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "ATL002", "존재하지 않는 댓글입니다.");
 
     private final HttpStatus httpStatus;
 

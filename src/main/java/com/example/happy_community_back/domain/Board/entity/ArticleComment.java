@@ -1,13 +1,18 @@
 package com.example.happy_community_back.domain.Board.entity;
 
+import com.example.happy_community_back.domain.Board.dto.request.ArticleCommentReqDto.ArticleCommentAddReqDto;
+import com.example.happy_community_back.domain.Board.dto.request.ArticleCommentReqDto.ArticleCommentModifyReqDto;
+import com.example.happy_community_back.global.config.db.BaseEntity;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Builder;
+import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ArticleComment {
+@Getter
+@Entity
+public class ArticleComment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,28 +21,34 @@ public class ArticleComment {
     @Column(nullable = false)
     private String content; // 본문
     @Column(nullable = false)
+    @ColumnDefault("n")
     private Character isDeleted; // 삭제여부
 
     @JoinColumn(name = "article_id")
     @ManyToOne(optional = false)
     private Article article; // 게시글 (ID)
 
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime createdAt; // 생성일시
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime modifiedAt; // 수정일시
-
     protected ArticleComment () {}
 
-    private ArticleComment(Article article, String content) {
+    @Builder
+    public ArticleComment(Article article, String content) {
         this.article = article;
         this.content = content;
     }
 
-    public static ArticleComment of(Article article, String content) {
-        return new ArticleComment(article, content);
+    public static ArticleComment addOf(ArticleCommentAddReqDto dto, Article article) {
+        return ArticleComment.builder()
+                .content(dto.content())
+                .article(article)
+                .build();
+    }
+
+    public void modify(ArticleCommentModifyReqDto dto) {
+        this.content = dto.content();
+    }
+
+    public void remove() {
+        this.isDeleted = 'y';
     }
 
     @Override

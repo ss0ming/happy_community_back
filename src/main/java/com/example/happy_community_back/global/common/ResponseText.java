@@ -13,4 +13,10 @@ public class ResponseText {
     public static final String SUCCESS_MODIFY_ARTICLE = "게시글 수정 성공";
 
     public static final String SUCCESS_REMOVE_ARTICLE = "게시글 삭제 성공";
+
+    public static final String SUCCESS_ADD_ARTICLE_COMMENT = "댓글 등록 성공";
+
+    public static final String SUCCESS_MODIFY_ARTICLE_COMMENT = "댓글 수정 성공";
+
+    public static final String SUCCESS_REMOVE_ARTICLE_COMMENT = "댓글 삭제 성공";
 }
