@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Getter
 @Entity
+@Table(name = "articles")
 public class Article extends BaseEntity {
 
     @Id
@@ -35,7 +36,7 @@ public class Article extends BaseEntity {
 //    private int viewCount; // 조회수
 
     @Column(nullable = false)
-    @ColumnDefault("n")
+    @ColumnDefault("'n'")
     private Character isDeleted; // 삭제여부
 
     protected Article () {}

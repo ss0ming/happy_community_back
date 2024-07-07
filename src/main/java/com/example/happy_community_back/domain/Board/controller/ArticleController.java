@@ -7,6 +7,7 @@ import com.example.happy_community_back.domain.Board.service.ArticleService;
 import com.example.happy_community_back.domain.Board.dto.response.ArticleResDto;
 import com.example.happy_community_back.global.common.ApiResponseEntity;
 import com.example.happy_community_back.global.common.ResponseText;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class ArticleController {
      * 게시글 등록 API
      */
     @PostMapping()
-    public ResponseEntity<ApiResponseEntity<String>> addArticle(ArticleAddReqDto articleAddReqDto) {
+    public ResponseEntity<ApiResponseEntity<String>> addArticle(@Valid @RequestBody ArticleAddReqDto articleAddReqDto) {
         articleService.addArticle(articleAddReqDto);
         return ResponseEntity.ok(ApiResponseEntity.of(ResponseText.SUCCESS_ADD_ARTICLE));
     }

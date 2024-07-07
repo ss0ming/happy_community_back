@@ -8,6 +8,12 @@ public class ResponseText {
 
     public static final String OK = "OK";
 
+    public static final String DUPLICATE = "DUPLICATE";
+
+    public static final String SUCCESS_SIGN_UP = "회원가입 성공";
+
+    public static final String SUCCESS_LOGOUT = "로그아웃 성공";
+
     public static final String SUCCESS_ADD_ARTICLE = "게시글 등록 성공";
 
     public static final String SUCCESS_MODIFY_ARTICLE = "게시글 수정 성공";

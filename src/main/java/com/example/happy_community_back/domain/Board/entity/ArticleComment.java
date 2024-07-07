@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Getter
 @Entity
+@Table(name = "comments")
 public class ArticleComment extends BaseEntity {
 
     @Id
@@ -20,8 +21,9 @@ public class ArticleComment extends BaseEntity {
 
     @Column(nullable = false)
     private String content; // 본문
-    @Column(nullable = false)
-    @ColumnDefault("n")
+
+    @Column(name = "is_deleted",nullable = false)
+    @ColumnDefault("'n'")
     private Character isDeleted; // 삭제여부
 
     @JoinColumn(name = "article_id")
