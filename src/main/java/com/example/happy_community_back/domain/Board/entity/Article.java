@@ -2,6 +2,7 @@ package com.example.happy_community_back.domain.Board.entity;
 
 import com.example.happy_community_back.domain.Board.dto.request.ArticleReqDto.ArticleAddReqDto;
 import com.example.happy_community_back.domain.Board.dto.request.ArticleReqDto.ArticleModifyReqDto;
+import com.example.happy_community_back.domain.auth.entity.Member;
 import com.example.happy_community_back.global.config.db.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -35,6 +36,10 @@ public class Article extends BaseEntity {
 //    @ColumnDefault("0")
 //    private int viewCount; // 조회수
 
+    @JoinColumn(name = "member_id")
+    @ManyToOne(optional = false)
+    private Member member;
+
     @Column(nullable = false)
     @ColumnDefault("'n'")
     private Character isDeleted; // 삭제여부
@@ -42,18 +47,20 @@ public class Article extends BaseEntity {
     protected Article () {}
 
     @Builder
-    public Article(String title, String content, String image, Character isDeleted) {
+    public Article(String title, String content, String image, Member member, Character isDeleted) {
         this.title = title;
         this.content = content;
         this.image = image;
+        this.member = member;
         this.isDeleted = isDeleted != null ? isDeleted : 'n';
     }
 
-    public static Article addOf(ArticleAddReqDto dto) {
+    public static Article addOf(ArticleAddReqDto dto, Member member) {
         return Article.builder()
                 .title(dto.title())
                 .content(dto.content())
                 .image(dto.image())
+                .member(member)
                 .build();
     }
 

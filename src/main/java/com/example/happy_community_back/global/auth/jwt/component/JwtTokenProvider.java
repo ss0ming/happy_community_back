@@ -103,6 +103,7 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(final String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
+
         if (claims.get("auth") == null) {
             throw new CustomException(ErrorCode.INVALID_ACCESS_TOKEN);
         }

@@ -1,6 +1,7 @@
 package com.example.happy_community_back.global.exception;
 
 import lombok.Builder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Builder

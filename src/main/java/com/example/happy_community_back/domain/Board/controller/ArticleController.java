@@ -10,6 +10,8 @@ import com.example.happy_community_back.global.common.ResponseText;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +43,8 @@ public class ArticleController {
      * 게시글 등록 API
      */
     @PostMapping()
-    public ResponseEntity<ApiResponseEntity<String>> addArticle(@Valid @RequestBody ArticleAddReqDto articleAddReqDto) {
-        articleService.addArticle(articleAddReqDto);
+    public ResponseEntity<ApiResponseEntity<String>> addArticle(@Valid @RequestBody ArticleAddReqDto articleAddReqDto, @AuthenticationPrincipal UserDetails userDetails) {
+        articleService.addArticle(articleAddReqDto, userDetails.getUsername());
         return ResponseEntity.ok(ApiResponseEntity.of(ResponseText.SUCCESS_ADD_ARTICLE));
     }
 
@@ -50,8 +52,8 @@ public class ArticleController {
      * 게시글 수정 API
      */
     @PutMapping("/{articleId}")
-    public ResponseEntity<ApiResponseEntity<String>> modifyArticle(@PathVariable Long articleId, ArticleModifyReqDto articleModifyReqDto) {
-        articleService.modifyArticle(articleModifyReqDto);
+    public ResponseEntity<ApiResponseEntity<String>> modifyArticle(@PathVariable Long articleId, @Valid @RequestBody ArticleModifyReqDto articleModifyReqDto) {
+        articleService.modifyArticle(articleId, articleModifyReqDto);
         return ResponseEntity.ok(ApiResponseEntity.of(ResponseText.SUCCESS_MODIFY_ARTICLE));
     }
 

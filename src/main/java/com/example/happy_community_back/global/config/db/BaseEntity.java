@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -22,12 +23,14 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at",updatable = false, nullable = false, columnDefinition = "DATETIME")
     @ColumnDefault("CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt; // 생성일시
+    @Comment("등록일자")
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(name = "modified_at", nullable = false, columnDefinition = "DATETIME")
     @ColumnDefault("CURRENT_TIMESTAMP")
-    private LocalDateTime modifiedAt; // 수정일시
+    @Comment("수정일자")
+    private LocalDateTime updatedAt;
 }
