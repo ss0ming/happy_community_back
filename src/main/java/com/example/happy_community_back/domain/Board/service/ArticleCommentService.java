@@ -7,6 +7,8 @@ import com.example.happy_community_back.domain.Board.entity.Article;
 import com.example.happy_community_back.domain.Board.entity.ArticleComment;
 import com.example.happy_community_back.domain.Board.repository.ArticleCommentRepository;
 import com.example.happy_community_back.domain.Board.repository.ArticleRepository;
+import com.example.happy_community_back.domain.auth.entity.Member;
+import com.example.happy_community_back.domain.auth.repository.MemberRepository;
 import com.example.happy_community_back.global.exception.CustomException;
 import com.example.happy_community_back.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,10 @@ import java.util.List;
 public class ArticleCommentService {
 
     private final ArticleCommentRepository articleCommentRepository;
+
     private final ArticleRepository articleRepository;
+
+    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public List<ArticleCommentResDto> getArticleComments(final Long articleId) {
@@ -44,11 +49,14 @@ public class ArticleCommentService {
     }
 
     @Transactional
-    public void addArticleComment(final Long articleId, ArticleCommentAddReqDto articleCommentAddReqDto) {
+    public void addArticleComment(final Long articleId, ArticleCommentAddReqDto articleCommentAddReqDto, String email) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        ArticleComment articleComment = ArticleComment.addOf(articleCommentAddReqDto, article);
+        Member member = memberRepository.findById(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST_USER_ID));
+
+        ArticleComment articleComment = ArticleComment.addOf(articleCommentAddReqDto, article, member);
         articleCommentRepository.save(articleComment);
     }
 

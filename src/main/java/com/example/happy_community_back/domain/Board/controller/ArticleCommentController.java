@@ -1,12 +1,16 @@
 package com.example.happy_community_back.domain.Board.controller;
 
-import com.example.happy_community_back.domain.Board.dto.request.ArticleCommentReqDto;
+import com.example.happy_community_back.domain.Board.dto.request.ArticleCommentReqDto.ArticleCommentAddReqDto;
+import com.example.happy_community_back.domain.Board.dto.request.ArticleCommentReqDto.ArticleCommentModifyReqDto;
 import com.example.happy_community_back.domain.Board.dto.response.ArticleCommentResDto;
 import com.example.happy_community_back.domain.Board.service.ArticleCommentService;
 import com.example.happy_community_back.global.common.ApiResponseEntity;
 import com.example.happy_community_back.global.common.ResponseText;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,9 +41,9 @@ public class ArticleCommentController {
     /**
      * 댓글 등록 API
      */
-    @PostMapping("")
-    public ResponseEntity<ApiResponseEntity<String>> addArticleComment(@PathVariable Long articleId, ArticleCommentReqDto.ArticleCommentAddReqDto articleCommentAddReqDto) {
-        articleCommentService.addArticleComment(articleId, articleCommentAddReqDto);
+    @PostMapping()
+    public ResponseEntity<ApiResponseEntity<String>> addArticleComment(@PathVariable Long articleId, @Valid @RequestBody ArticleCommentAddReqDto articleCommentAddReqDto, @AuthenticationPrincipal UserDetails userDetails) {
+        articleCommentService.addArticleComment(articleId, articleCommentAddReqDto, userDetails.getUsername());
         return ResponseEntity.ok(ApiResponseEntity.of(ResponseText.SUCCESS_ADD_ARTICLE_COMMENT));
     }
 
@@ -47,7 +51,7 @@ public class ArticleCommentController {
      * 댓글 수정 API
      */
     @PutMapping("/{commentId}")
-    public ResponseEntity<ApiResponseEntity<String>> modifyArticleComment(@PathVariable Long commentId, ArticleCommentReqDto.ArticleCommentModifyReqDto articleCommentModifyReqDto, @PathVariable String articleId) {
+    public ResponseEntity<ApiResponseEntity<String>> modifyArticleComment(@PathVariable Long commentId, @Valid @RequestBody ArticleCommentModifyReqDto articleCommentModifyReqDto, @PathVariable String articleId) {
         articleCommentService.modifyArticleComment(commentId, articleCommentModifyReqDto);
         return ResponseEntity.ok(ApiResponseEntity.of(ResponseText.SUCCESS_MODIFY_ARTICLE_COMMENT));
     }
