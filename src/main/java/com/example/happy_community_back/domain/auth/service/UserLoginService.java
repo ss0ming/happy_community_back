@@ -17,12 +17,20 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 
 @Service
@@ -79,6 +87,31 @@ public class UserLoginService {
 
         // 비밀번호 암호화
         dto.modifyPassword(passwordEncoder.encode(dto.getPassword()));
+
+        // 프로필 사진
+        String profileImageBase64 = dto.getImage();
+        if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
+            // Base64 헤더 제거
+            String base64Image = profileImageBase64.split(",")[1];
+            try {
+                // Base64 디코딩
+                byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+
+                // 파일 저장
+                File file = new File("image/profile/" + dto.getEmail() + ".png");
+                try (OutputStream os = new FileOutputStream(file)) {
+                    os.write(imageBytes);
+                } catch (Exception e) {
+                    throw new CustomException(ErrorCode.SEVER_ERROR);
+                }
+
+                System.out.println("이미지 저장 성공: " + file.getAbsolutePath());
+
+                dto.modifyImage(file.getAbsolutePath());
+            } catch (Exception e) {
+                throw new CustomException(ErrorCode.SEVER_ERROR);
+            }
+        }
 
         Member member = Member.of(dto);
         memberRepository.save(member);

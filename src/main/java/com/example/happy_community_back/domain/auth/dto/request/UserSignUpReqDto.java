@@ -28,4 +28,8 @@ public class UserSignUpReqDto {
     public void modifyPassword(String password) {
         this.password = password;
     }
+
+    public void modifyImage(String path) {
+        this.image = path;
+    }
 }
