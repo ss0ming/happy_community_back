@@ -43,26 +43,6 @@ public class UserLoginController {
     }
 
     /**
-     * 이메일 중복 체크 API
-     */
-    @GetMapping("/check-duplicate-email")
-    public ResponseEntity<ApiResponseEntity<String>> checkDuplicateEmail(@RequestParam String email) {
-        boolean isDuplicate = userLoginService.checkDuplicateEmail(email);
-
-        return ResponseEntity.ok(ApiResponseEntity.of(isDuplicate ? ResponseText.DUPLICATE : ResponseText.OK));
-    }
-
-    /**
-     * 닉네임 중복 체크 API
-     */
-    @GetMapping("/check-duplicate-nickname")
-    public ResponseEntity<ApiResponseEntity<String>> checkDuplicateNickname(@RequestBody String nickname) {
-        boolean isDuplicate = userLoginService.checkDuplicateNickname(nickname);
-
-        return ResponseEntity.ok(ApiResponseEntity.of(isDuplicate ? ResponseText.DUPLICATE : ResponseText.OK));
-    }
-
-    /**
      * 토큰 갱신 API
      */
     @PostMapping("/refresh")

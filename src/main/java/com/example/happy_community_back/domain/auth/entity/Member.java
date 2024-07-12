@@ -1,5 +1,7 @@
 package com.example.happy_community_back.domain.auth.entity;
 
+import com.example.happy_community_back.domain.auth.dto.request.UserReqDto.UserModifyPasswordReqDto;
+import com.example.happy_community_back.domain.auth.dto.request.UserReqDto.UserModifyNicknameReqDto;
 import com.example.happy_community_back.domain.auth.dto.request.UserSignUpReqDto;
 import com.example.happy_community_back.global.config.db.BaseEntity;
 import jakarta.persistence.*;
@@ -30,15 +32,16 @@ public class Member extends BaseEntity {
     @Comment("닉네임")
     private String nickname;
 
+    @Column(name = "image")
     @Comment("프로필 사진")
-    private String image;
+    private String profileImage;
 
     @Builder
     public Member (String email, String password, String nickname, String image) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.image = image;
+        this.profileImage = image;
     }
 
     public static Member of(UserSignUpReqDto dto) {
@@ -47,5 +50,13 @@ public class Member extends BaseEntity {
                 .password(dto.getPassword())
                 .nickname(dto.getNickname())
                 .build();
+    }
+
+    public void modifyPassword(UserModifyPasswordReqDto dto) {
+        this.password = dto.password();
+    }
+
+    public void modifyNickname(UserModifyNicknameReqDto dto) {
+        this.nickname = dto.nickname();
     }
 }

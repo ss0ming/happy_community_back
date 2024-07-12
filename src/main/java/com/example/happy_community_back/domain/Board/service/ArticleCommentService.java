@@ -30,7 +30,7 @@ public class ArticleCommentService {
 
     @Transactional(readOnly = true)
     public List<ArticleCommentResDto> getArticleComments(final Long articleId) {
-        List<ArticleComment> comments = articleCommentRepository.findAllByArticleId(articleId);
+        List<ArticleComment> comments = articleCommentRepository.findAllByArticleIdAndIsDeleted(articleId, 'n');
         List<ArticleCommentResDto> articleResDto = new ArrayList<>();
 
         for (ArticleComment comment : comments) {
@@ -44,6 +44,10 @@ public class ArticleCommentService {
     public ArticleCommentResDto getArticleComment(final Long commentId) {
         ArticleComment comment = articleCommentRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_COMMENT_NOT_FOUND));
+
+        if (comment.getIsDeleted() != 'n') {
+            throw new CustomException(ErrorCode.ARTICLE_COMMENT_NOT_FOUND);
+        }
 
         return ArticleCommentResDto.of(comment);
     }

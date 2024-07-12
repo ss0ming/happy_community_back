@@ -84,16 +84,6 @@ public class UserLoginService {
         memberRepository.save(member);
     }
 
-    @Transactional(readOnly = true)
-    public boolean checkDuplicateEmail(final String email) {
-        return memberRepository.existsByEmail(email);
-    }
-
-    @Transactional(readOnly = true)
-    public boolean checkDuplicateNickname(final String nickname) {
-        return memberRepository.existsByNickname(nickname);
-    }
-
     /**
      * 로그아웃
      */

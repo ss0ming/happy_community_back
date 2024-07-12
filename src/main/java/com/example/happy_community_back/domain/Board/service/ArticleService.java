@@ -4,6 +4,7 @@ import com.example.happy_community_back.domain.Board.dto.request.ArticleReqDto.A
 import com.example.happy_community_back.domain.Board.dto.request.ArticleReqDto.ArticleModifyReqDto;
 import com.example.happy_community_back.domain.Board.dto.response.ArticleResDto;
 import com.example.happy_community_back.domain.Board.entity.Article;
+import com.example.happy_community_back.domain.Board.repository.ArticleCommentRepository;
 import com.example.happy_community_back.domain.Board.repository.ArticleRepository;
 import com.example.happy_community_back.domain.auth.entity.Member;
 import com.example.happy_community_back.domain.auth.repository.MemberRepository;
@@ -24,13 +25,17 @@ public class ArticleService {
 
     private final MemberRepository memberRepository;
 
+    private final ArticleCommentRepository commentRepository;
+
     @Transactional(readOnly = true)
     public List<ArticleResDto> getArticles() {
-        List<Article> articles = articleRepository.findAll();
+        List<Article> articles = articleRepository.findAllByIsDeleted('n');
         List<ArticleResDto> articlesDto = new ArrayList<>();
 
         for (Article article : articles) {
-            articlesDto.add(ArticleResDto.of(article));
+            int commentCount = commentRepository.countByArticleIdAndIsDeleted(article.getId(), 'n');
+            System.out.println(commentCount);
+            articlesDto.add(ArticleResDto.of(article, commentCount));
         }
 
         return articlesDto;
@@ -41,7 +46,13 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        return ArticleResDto.of(article);
+        if (article.getIsDeleted() != 'n') {
+            throw new CustomException(ErrorCode.ARTICLE_COMMENT_NOT_FOUND);
+        }
+
+        int commentCount = commentRepository.countByArticleIdAndIsDeleted(article.getId(), 'n');
+
+        return ArticleResDto.of(article, commentCount);
     }
 
     @Transactional

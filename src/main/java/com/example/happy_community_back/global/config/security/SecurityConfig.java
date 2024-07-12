@@ -48,6 +48,8 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/user/login").permitAll()
                                 .requestMatchers("/api/user/sign-up").permitAll()
+                                .requestMatchers("/api/user/check-duplicate-email").permitAll()
+                                .requestMatchers("/api/user/check-duplicate-nickname").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
                                 .requestMatchers("/api/articles/**").hasRole("USER")
                                 .anyRequest().authenticated())

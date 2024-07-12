@@ -28,13 +28,13 @@ public class Article extends BaseEntity {
 
     private String image; // 이미지
 
-//    @Column(nullable = false)
-//    @ColumnDefault("0")
-//    private int likes; // 좋아요수
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int likes; // 좋아요수
 
-//    @Column(nullable = false)
-//    @ColumnDefault("0")
-//    private int viewCount; // 조회수
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private int viewCount; // 조회수
 
     @JoinColumn(name = "member_id")
     @ManyToOne(optional = false)
@@ -51,6 +51,8 @@ public class Article extends BaseEntity {
         this.title = title;
         this.content = content;
         this.image = image;
+        this.likes = 0;
+        this.viewCount = 0;
         this.member = member;
         this.isDeleted = isDeleted != null ? isDeleted : 'n';
     }
@@ -72,17 +74,5 @@ public class Article extends BaseEntity {
 
     public void remove() {
         this.isDeleted = 'y';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Article article)) return false;
-        return id != null && id.equals(article.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
