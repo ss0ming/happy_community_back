@@ -49,6 +49,7 @@ public class Member extends BaseEntity {
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .nickname(dto.getNickname())
+                .image(dto.getImage())
                 .build();
     }
 

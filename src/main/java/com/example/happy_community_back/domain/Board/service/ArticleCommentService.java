@@ -31,13 +31,13 @@ public class ArticleCommentService {
     @Transactional(readOnly = true)
     public List<ArticleCommentResDto> getArticleComments(final Long articleId) {
         List<ArticleComment> comments = articleCommentRepository.findAllByArticleIdAndIsDeleted(articleId, 'n');
-        List<ArticleCommentResDto> articleResDto = new ArrayList<>();
+        List<ArticleCommentResDto> articleCommentResDtos = new ArrayList<>();
 
         for (ArticleComment comment : comments) {
-            articleResDto.add(ArticleCommentResDto.of(comment));
+            articleCommentResDtos.add(ArticleCommentResDto.of(comment));
         }
 
-        return articleResDto;
+        return articleCommentResDtos;
     }
 
     @Transactional(readOnly = true)
