@@ -7,13 +7,13 @@ import lombok.Builder;
 public record UserResDto(
         String email,
         String nickname,
-        String image
+        String profileImage
 ) {
-    public static UserResDto of(Member member){
+    public static UserResDto of(Member member, String base64Image){
         return UserResDto.builder()
                 .email(member.getEmail())
                 .nickname(member.getNickname())
-                .image(member.getProfileImage())
+                .profileImage(base64Image)
                 .build();
     }
 }

@@ -21,6 +21,7 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.BAD_REQUEST, "UA010", "이미 존재하는 이메일입니다."),
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST, "UA011", "이미 존재하는 닉네임입니다."),
     PASSWORD_NOT_MATCHED(HttpStatus.BAD_REQUEST, "UA012", "비밀번호가 일치하지 않습니다."),
+    FILE_READ_ERROR(HttpStatus.BAD_REQUEST, "UA013", "파일 읽기 오류입니다."),
 
     // 게시글 관련 에러코드
     ARTICLE_NOT_FOUND(HttpStatus.BAD_REQUEST, "ATL001", "존재하지 않는 게시글입니다."),

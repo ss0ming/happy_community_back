@@ -15,7 +15,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -34,7 +39,19 @@ public class ArticleCommentService {
         List<ArticleCommentResDto> articleCommentResDtos = new ArrayList<>();
 
         for (ArticleComment comment : comments) {
-            articleCommentResDtos.add(ArticleCommentResDto.of(comment));
+            String imagePath = comment.getMember().getProfileImage();
+
+            String base64Image = null;
+            File file = new File(imagePath);
+            if (file.exists()) {
+                try {
+                    byte[] fileContent = Files.readAllBytes(file.toPath());
+                    base64Image = Base64.getEncoder().encodeToString(fileContent);
+                } catch (IOException e) {
+                    throw new CustomException(ErrorCode.FILE_READ_ERROR);
+                }
+            }
+            articleCommentResDtos.add(ArticleCommentResDto.of(comment, base64Image));
         }
 
         return articleCommentResDtos;
@@ -49,7 +66,21 @@ public class ArticleCommentService {
             throw new CustomException(ErrorCode.ARTICLE_COMMENT_NOT_FOUND);
         }
 
-        return ArticleCommentResDto.of(comment);
+        String imagePath = comment.getMember().getProfileImage();
+        System.out.println("이미지 경로 = " + imagePath);
+
+        String base64Image = null;
+        File file = new File(imagePath);
+        if (file.exists()) {
+            try {
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                base64Image = Base64.getEncoder().encodeToString(fileContent);
+            } catch (IOException e) {
+                throw new CustomException(ErrorCode.FILE_READ_ERROR);
+            }
+        }
+
+        return ArticleCommentResDto.of(comment, base64Image);
     }
 
     @Transactional

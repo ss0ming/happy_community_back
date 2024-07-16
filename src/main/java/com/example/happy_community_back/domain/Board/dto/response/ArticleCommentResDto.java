@@ -16,7 +16,7 @@ public record ArticleCommentResDto(
         String profileImage
 
 ) {
-    public static ArticleCommentResDto of(ArticleComment articleComment) {
+    public static ArticleCommentResDto of(ArticleComment articleComment, String base64Image) {
         Member member = articleComment.getMember();
 
         return ArticleCommentResDto.builder()
@@ -25,7 +25,7 @@ public record ArticleCommentResDto(
                 .createdAt(articleComment.getCreatedAt())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
-                .profileImage(member.getProfileImage())
+                .profileImage(base64Image)
                 .build();
     }
 }

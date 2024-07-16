@@ -20,7 +20,7 @@ public record ArticleResDto(
         String profileImage,
         int commentCount
 ) {
-    public static ArticleResDto of(Article article, int commentCount) {
+    public static ArticleResDto of(Article article, int commentCount, String base64Image) {
         Member member = article.getMember();
 
         return ArticleResDto.builder()
@@ -33,7 +33,7 @@ public record ArticleResDto(
                 .createdAt(article.getCreatedAt())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
-                .profileImage(member.getProfileImage())
+                .profileImage(base64Image)
                 .commentCount(commentCount)
                 .build();
     }

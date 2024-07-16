@@ -2,6 +2,7 @@ package com.example.happy_community_back.domain.Board.service;
 
 import com.example.happy_community_back.domain.Board.dto.request.ArticleReqDto.ArticleAddReqDto;
 import com.example.happy_community_back.domain.Board.dto.request.ArticleReqDto.ArticleModifyReqDto;
+import com.example.happy_community_back.domain.Board.dto.response.ArticleCommentResDto;
 import com.example.happy_community_back.domain.Board.dto.response.ArticleResDto;
 import com.example.happy_community_back.domain.Board.entity.Article;
 import com.example.happy_community_back.domain.Board.repository.ArticleCommentRepository;
@@ -14,7 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -34,8 +39,21 @@ public class ArticleService {
 
         for (Article article : articles) {
             int commentCount = commentRepository.countByArticleIdAndIsDeleted(article.getId(), 'n');
-            System.out.println(commentCount);
-            articlesDto.add(ArticleResDto.of(article, commentCount));
+
+            String imagePath = article.getMember().getProfileImage();
+
+            String base64Image = null;
+            File file = new File(imagePath);
+            if (file.exists()) {
+                try {
+                    byte[] fileContent = Files.readAllBytes(file.toPath());
+                    base64Image = Base64.getEncoder().encodeToString(fileContent);
+                } catch (IOException e) {
+                    throw new CustomException(ErrorCode.FILE_READ_ERROR);
+                }
+            }
+
+            articlesDto.add(ArticleResDto.of(article, commentCount, base64Image));
         }
 
         return articlesDto;
@@ -52,7 +70,20 @@ public class ArticleService {
 
         int commentCount = commentRepository.countByArticleIdAndIsDeleted(article.getId(), 'n');
 
-        return ArticleResDto.of(article, commentCount);
+        String imagePath = article.getMember().getProfileImage();
+
+        String base64Image = null;
+        File file = new File(imagePath);
+        if (file.exists()) {
+            try {
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                base64Image = Base64.getEncoder().encodeToString(fileContent);
+            } catch (IOException e) {
+                throw new CustomException(ErrorCode.FILE_READ_ERROR);
+            }
+        }
+
+        return ArticleResDto.of(article, commentCount, base64Image);
     }
 
     @Transactional

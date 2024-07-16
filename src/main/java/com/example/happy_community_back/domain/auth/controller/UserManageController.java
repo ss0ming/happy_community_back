@@ -42,7 +42,7 @@ public class UserManageController {
      */
     @GetMapping("/image")
     public ResponseEntity<Resource> getUserImage(@RequestParam String imagePath) {
-        System.out.println("이미지 경로 = " + imagePath);
+        System.out.println("???이미지 경로 = " + imagePath);
         File file = new File(imagePath);
         if (file.exists()) {
             Resource resource = new FileSystemResource(file);

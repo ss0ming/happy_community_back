@@ -8,8 +8,19 @@ import com.example.happy_community_back.domain.auth.repository.MemberRepository;
 import com.example.happy_community_back.global.exception.CustomException;
 import com.example.happy_community_back.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +33,20 @@ public class UserManageService {
         Member member = memberRepository.findById(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXIST_USER_ID));
 
-        return UserResDto.of(member);
+        String imagePath = member.getProfileImage();
+
+        String base64Image = null;
+        File file = new File(imagePath);
+        if (file.exists()) {
+            try {
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                base64Image = Base64.getEncoder().encodeToString(fileContent);
+            } catch (IOException e) {
+                throw new CustomException(ErrorCode.FILE_READ_ERROR);
+            }
+        }
+
+        return UserResDto.of(member, base64Image);
     }
 
     @Transactional(readOnly = true)
