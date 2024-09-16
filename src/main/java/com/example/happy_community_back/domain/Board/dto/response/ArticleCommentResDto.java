@@ -5,12 +5,13 @@ import com.example.happy_community_back.domain.auth.entity.Member;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Builder
 public record ArticleCommentResDto(
         Long commentId,
         String content,
-        LocalDateTime createdAt,
+        String createdAt,
         String email,
         String nickname,
         String profileImage
@@ -22,7 +23,7 @@ public record ArticleCommentResDto(
         return ArticleCommentResDto.builder()
                 .commentId(articleComment.getId())
                 .content(articleComment.getContent())
-                .createdAt(articleComment.getCreatedAt())
+                .createdAt(articleComment.getCreatedAt().format(DateTimeFormatter.ofPattern("yy-MM-dd hh:mm:ss")))
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .profileImage(base64Image)

@@ -5,6 +5,7 @@ import com.example.happy_community_back.domain.auth.entity.Member;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Builder
 public record ArticleResDto(
@@ -14,7 +15,7 @@ public record ArticleResDto(
         String image,
         int likes,
         int viewCount,
-        LocalDateTime createdAt,
+        String createdAt,
         String email,
         String nickname,
         String profileImage,
@@ -30,7 +31,7 @@ public record ArticleResDto(
                 .image(article.getImage())
                 .likes(article.getLikes())
                 .viewCount(article.getViewCount())
-                .createdAt(article.getCreatedAt())
+                .createdAt(article.getCreatedAt().format(DateTimeFormatter.ofPattern("yy-MM-dd hh:mm:ss")))
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .profileImage(base64Image)
