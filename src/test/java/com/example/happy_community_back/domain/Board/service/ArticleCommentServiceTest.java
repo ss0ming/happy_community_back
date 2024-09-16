@@ -51,14 +51,14 @@ class ArticleCommentServiceTest {
                     .content("댓글입니다.")
                     .build();
 
-            given(articleCommentRepository.findAllByArticleId(1L)).willReturn(Collections.singletonList(comment));
+            given(articleCommentRepository.findAllByArticleIdAndIsDeleted(1L, 'n')).willReturn(Collections.singletonList(comment));
 
             // when
             List<ArticleCommentResDto> result = articleCommentService.getArticleComments(1L);
 
             // then
             assertThat(result).isNotNull();
-            then(articleCommentRepository).should().findAllByArticleId(1L);
+            then(articleCommentRepository).should().findAllByArticleIdAndIsDeleted(1L, 'n');
         }
     }
 
@@ -120,7 +120,7 @@ class ArticleCommentServiceTest {
 
             // when
             given(articleRepository.findById(1L)).willReturn(Optional.of(article));
-            articleCommentService.addArticleComment(1L, commentAddReqDto);
+            articleCommentService.addArticleComment(1L, commentAddReqDto, any());
 
             // then
             then(articleCommentRepository).should().save(any());
@@ -136,7 +136,6 @@ class ArticleCommentServiceTest {
         void 성공() {
             // given
             ArticleCommentModifyReqDto commentModifyReqDto = ArticleCommentModifyReqDto.builder()
-                    .commentId(1L)
                     .content("댓글입니다.")
                     .build();
 
@@ -147,7 +146,7 @@ class ArticleCommentServiceTest {
             given(articleCommentRepository.findById(1L)).willReturn(Optional.of(comment));
 
             // when
-            articleCommentService.modifyArticleComment(commentModifyReqDto.commentId(), commentModifyReqDto);
+            articleCommentService.modifyArticleComment(1L, commentModifyReqDto);
 
             // then
             then(articleCommentRepository).should().findById(1L);
@@ -159,14 +158,13 @@ class ArticleCommentServiceTest {
         void 실패_존재하지_않는_댓글_ID() {
             // given
             ArticleCommentModifyReqDto commentModifyReqDto = ArticleCommentModifyReqDto.builder()
-                    .commentId(1L)
                     .content("댓글입니다.")
                     .build();
 
             given(articleCommentRepository.findById(1L)).willReturn(Optional.empty());
 
             // when
-            assertThatThrownBy(() -> articleCommentService.modifyArticleComment(commentModifyReqDto.commentId(), commentModifyReqDto))
+            assertThatThrownBy(() -> articleCommentService.modifyArticleComment(1L, commentModifyReqDto))
                     .isInstanceOf(CustomException.class)
                     .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ARTICLE_COMMENT_NOT_FOUND);
 

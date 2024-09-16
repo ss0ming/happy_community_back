@@ -114,7 +114,7 @@ class ArticleServiceTest {
                     .build();
 
             // when
-            articleService.addArticle(articleAddReqDto);
+            articleService.addArticle(articleAddReqDto, any());
 
             // then
             then(articleRepository).should().save(any());
@@ -130,7 +130,6 @@ class ArticleServiceTest {
         void 성공() {
             // given
             ArticleModifyReqDto articleModifyReqDto = ArticleModifyReqDto.builder()
-                    .articleId(1L)
                     .title("제목")
                     .content("내용입니다.")
                     .image(null)
@@ -145,7 +144,7 @@ class ArticleServiceTest {
             given(articleRepository.findById(1L)).willReturn(Optional.of(article));
 
             // when
-            articleService.modifyArticle(articleModifyReqDto);
+            articleService.modifyArticle(1L, articleModifyReqDto);
 
             // then
             then(articleRepository).should().findById(1L);
@@ -157,7 +156,6 @@ class ArticleServiceTest {
         void 실패_존재하지_않는_게시글_ID() {
             // given
             ArticleModifyReqDto articleModifyReqDto = ArticleModifyReqDto.builder()
-                    .articleId(1L)
                     .title("제목")
                     .content("내용입니다.")
                     .image(null)
@@ -166,7 +164,7 @@ class ArticleServiceTest {
             given(articleRepository.findById(1L)).willReturn(Optional.empty());
 
             // when
-            assertThatThrownBy(() -> articleService.modifyArticle(articleModifyReqDto))
+            assertThatThrownBy(() -> articleService.modifyArticle(1L, articleModifyReqDto))
                     .isInstanceOf(CustomException.class)
                     .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ARTICLE_NOT_FOUND);
 

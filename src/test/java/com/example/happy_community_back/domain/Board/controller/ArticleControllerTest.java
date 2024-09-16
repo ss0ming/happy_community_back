@@ -154,7 +154,7 @@ class ArticleControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.data").value(ResponseText.SUCCESS_ADD_ARTICLE));
 
-            then(articleService).should().addArticle(any());
+            then(articleService).should().addArticle(any(), any());
         }
 
         private ArticleAddReqDto getArticleAddReqDto() {
@@ -186,7 +186,7 @@ class ArticleControllerTest {
             actions.andExpect(status().isOk())
                     .andExpect(jsonPath("$.data").value(ResponseText.SUCCESS_MODIFY_ARTICLE));
 
-            then(articleService).should().modifyArticle(any());
+            then(articleService).should().modifyArticle(1L, any());
         }
 
         private ArticleModifyReqDto getArticleModifyReqDto() {

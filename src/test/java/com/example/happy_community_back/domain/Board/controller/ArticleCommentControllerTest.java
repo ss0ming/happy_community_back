@@ -151,12 +151,11 @@ class ArticleCommentControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.data").value(ResponseText.SUCCESS_ADD_ARTICLE_COMMENT));
 
-            then(articleCommentService).should().addArticleComment(any(), any());
+            then(articleCommentService).should().addArticleComment(any(), any(), any());
         }
 
         private ArticleCommentAddReqDto getCommentAddReqDto() {
             return ArticleCommentAddReqDto.builder()
-                    .articleId(articleId)
                     .content("댓글입니다.")
                     .build();
         }
