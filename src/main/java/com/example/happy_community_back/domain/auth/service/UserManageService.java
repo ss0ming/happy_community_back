@@ -36,15 +36,15 @@ public class UserManageService {
         String imagePath = member.getProfileImage();
 
         String base64Image = null;
-        File file = new File(imagePath);
-        if (file.exists()) {
-            try {
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                base64Image = Base64.getEncoder().encodeToString(fileContent);
-            } catch (IOException e) {
-                throw new CustomException(ErrorCode.FILE_READ_ERROR);
-            }
-        }
+//        File file = new File(imagePath);
+//        if (file.exists()) {
+//            try {
+//                byte[] fileContent = Files.readAllBytes(file.toPath());
+//                base64Image = Base64.getEncoder().encodeToString(fileContent);
+//            } catch (IOException e) {
+//                throw new CustomException(ErrorCode.FILE_READ_ERROR);
+//            }
+//        }
 
         return UserResDto.of(member, base64Image);
     }

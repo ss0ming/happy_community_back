@@ -12,6 +12,7 @@ import com.example.happy_community_back.domain.auth.repository.MemberRepository;
 import com.example.happy_community_back.global.exception.CustomException;
 import com.example.happy_community_back.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -43,16 +45,15 @@ public class ArticleService {
             String imagePath = article.getMember().getProfileImage();
 
             String base64Image = null;
-            File file = new File(imagePath);
-            if (file.exists()) {
-                try {
-                    byte[] fileContent = Files.readAllBytes(file.toPath());
-                    base64Image = Base64.getEncoder().encodeToString(fileContent);
-                } catch (IOException e) {
-                    throw new CustomException(ErrorCode.FILE_READ_ERROR);
-                }
-            }
-
+//            File file = new File(imagePath);
+//            if (file.exists()) {
+//                try {
+//                    byte[] fileContent = Files.readAllBytes(file.toPath());
+//                    base64Image = Base64.getEncoder().encodeToString(fileContent);
+//                } catch (IOException e) {
+//                    throw new CustomException(ErrorCode.FILE_READ_ERROR);
+//                }
+//            }
             articlesDto.add(ArticleResDto.of(article, commentCount, base64Image));
         }
 
@@ -73,15 +74,15 @@ public class ArticleService {
         String imagePath = article.getMember().getProfileImage();
 
         String base64Image = null;
-        File file = new File(imagePath);
-        if (file.exists()) {
-            try {
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                base64Image = Base64.getEncoder().encodeToString(fileContent);
-            } catch (IOException e) {
-                throw new CustomException(ErrorCode.FILE_READ_ERROR);
-            }
-        }
+//        File file = new File(imagePath);
+//        if (file.exists()) {
+//            try {
+//                byte[] fileContent = Files.readAllBytes(file.toPath());
+//                base64Image = Base64.getEncoder().encodeToString(fileContent);
+//            } catch (IOException e) {
+//                throw new CustomException(ErrorCode.FILE_READ_ERROR);
+//            }
+//        }
 
         return ArticleResDto.of(article, commentCount, base64Image);
     }

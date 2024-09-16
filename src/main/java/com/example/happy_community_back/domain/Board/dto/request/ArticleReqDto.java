@@ -17,9 +17,7 @@ public class ArticleReqDto {
             String title,
 
             @NotBlank(message = "내용을 작성해주세요.")
-            String content,
-
-            String image
+            String content
     ) {
 
     }
@@ -31,9 +29,8 @@ public class ArticleReqDto {
             String title,
 
             @NotBlank(message = "내용을 작성해주세요.")
-            String content,
-            String image
-    ) {
+            String content
 
+    ) {
     }
 }

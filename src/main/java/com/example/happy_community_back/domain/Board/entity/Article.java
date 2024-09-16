@@ -61,7 +61,6 @@ public class Article extends BaseEntity {
         return Article.builder()
                 .title(dto.title())
                 .content(dto.content())
-                .image(dto.image())
                 .member(member)
                 .build();
     }
@@ -69,7 +68,6 @@ public class Article extends BaseEntity {
     public void modify(ArticleModifyReqDto dto) {
         this.title = dto.title();
         this.content = dto.content();
-        this.image = dto.image();
     }
 
     public void remove() {

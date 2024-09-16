@@ -42,15 +42,15 @@ public class ArticleCommentService {
             String imagePath = comment.getMember().getProfileImage();
 
             String base64Image = null;
-            File file = new File(imagePath);
-            if (file.exists()) {
-                try {
-                    byte[] fileContent = Files.readAllBytes(file.toPath());
-                    base64Image = Base64.getEncoder().encodeToString(fileContent);
-                } catch (IOException e) {
-                    throw new CustomException(ErrorCode.FILE_READ_ERROR);
-                }
-            }
+//            File file = new File(imagePath);
+//            if (file.exists()) {
+//                try {
+//                    byte[] fileContent = Files.readAllBytes(file.toPath());
+//                    base64Image = Base64.getEncoder().encodeToString(fileContent);
+//                } catch (IOException e) {
+//                    throw new CustomException(ErrorCode.FILE_READ_ERROR);
+//                }
+//            }
             articleCommentResDtos.add(ArticleCommentResDto.of(comment, base64Image));
         }
 
@@ -70,15 +70,15 @@ public class ArticleCommentService {
         System.out.println("이미지 경로 = " + imagePath);
 
         String base64Image = null;
-        File file = new File(imagePath);
-        if (file.exists()) {
-            try {
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                base64Image = Base64.getEncoder().encodeToString(fileContent);
-            } catch (IOException e) {
-                throw new CustomException(ErrorCode.FILE_READ_ERROR);
-            }
-        }
+//        File file = new File(imagePath);
+//        if (file.exists()) {
+//            try {
+//                byte[] fileContent = Files.readAllBytes(file.toPath());
+//                base64Image = Base64.getEncoder().encodeToString(fileContent);
+//            } catch (IOException e) {
+//                throw new CustomException(ErrorCode.FILE_READ_ERROR);
+//            }
+//        }
 
         return ArticleCommentResDto.of(comment, base64Image);
     }
